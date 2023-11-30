@@ -261,25 +261,23 @@ Zira를 간단하게 작성하여 서로 작업 내용을 공유하니까 다른
 <div align="center">
   <table>
     <tr align="center">
-      <th>게임방 화면</th>
-      <th>게임 화면</th>
+      <th>회원가입</th>
+      <th>상품조회</th>
     </tr>
     <tr>
-      <td><img src="https://github.com/dslov89/Agricola/assets/71018440/62fe59ca-7aae-4e94-b4b7-99b24c702f5d" alt="gif-main-page" width="370"></td>
-      <td><img src="https://github.com/dslov89/Agricola/assets/71018440/64b0fcf7-bac5-4895-9ea6-3e6d37763d0a"alt="gif-function1" width="370"></td>
+      <td><img src="https://github.com/YBE-7/MiniProject_FE/assets/59966217/27f10e32-ff99-4d47-ba1a-942bfd3b4c4a" alt="회원가입 유효성 검사"></td>
+      <td><img src="https://github.com/YBE-7/MiniProject_FE/assets/59966217/6eb37248-a792-4f33-af2d-79bb3d324401"alt="무한스크롤 시연"></td>
     </tr>
     <tr align="center">
-      <th>농장</th>
-      <th>카드</th>
+      <th>상세페이지</th>
+      <th>결제페이지</th>
     </tr>
     <tr>
-      <td><img src="https://github.com/dslov89/Agricola/assets/71018440/0e566f6c-c82f-43c7-86d4-776a860caaa8" alt="gif-function2" width="370"></td>
-      <td><img src= "https://github.com/dslov89/Agricola/assets/71018440/e522d12b-a2ab-47a8-bc5a-e222067da7b6"alt="gif-function3" width="370"></td>
+      <td><img src="https://github.com/YBE-7/MiniProject_FE/assets/59966217/31cc1d41-e252-4c9a-a466-dca74ec67c7e" alt="날짜에 따라 가격 및 품절 변경"></td>
+      <td><img src="https://github.com/YBE-7/MiniProject_FE/assets/59966217/86ddcbf3-460f-4770-bc05-94b011a392d0" alt="결제페이지 필수 동의 여부"></td>
     </tr>
   </table>
 </div>
-
-위와 같이 중요한 기능들 gif로 넣으시면 됩니다.
 
 <br/>
 
