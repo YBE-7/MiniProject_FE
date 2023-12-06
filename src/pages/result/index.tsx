@@ -81,7 +81,7 @@ const result = () => {
 					<CommonHeader name="주문 결과" isHomeIcon />
 					{/* <Header title="주문 결과" /> */}
 					<div className="bg-white fixed left-0 top-[48px] w-screen drop-shadow-sm">
-						<div className="flex h-[48px] justify-center items-center px-4  w-[768px]  m-auto top-0   left-0">
+						<div className="flex h-[48px] justify-center items-center px-4 w-full lg:max-w-[768px] m-auto top-0 left-0">
 							<div className="flex flex-col justify-center items-center ">
 								<div className=" font-semibold text-content">
 									예약이 완료되었습니다.
@@ -250,7 +250,7 @@ const result = () => {
 						</div>
 					</div>
 
-					<div className="w-[768px] m-auto top-0 left-0 py-5">
+					<div className="w-full lg:max-w-3xl m-auto top-0 left-0 py-5">
 						<button
 							onClick={() => {
 								navigate('/');

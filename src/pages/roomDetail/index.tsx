@@ -34,8 +34,8 @@ export default function RoomDetail() {
 	const show = useScrollToShow(false, 200);
 
 	useEffect(() => {
-		window.scrollTo(0,0);
-	},[]);
+		window.scrollTo(0, 0);
+	}, []);
 
 	useEffect(() => {
 		const dates = [];
@@ -97,7 +97,7 @@ export default function RoomDetail() {
 		<div className="justify-center m-auto text-content text-black">
 			<Header />
 			<div className="relative mt-[48px] flex-row">
-				<div className="max-w-none h-[507px] ml-[-1.25rem] mr-[-1.25rem]">
+				<div className="max-w-none ml-[-1.25rem] mr-[-1.25rem]">
 					<ImageSwiper items={roomInfo?.images} />
 				</div>
 				<div className="pt-3">
@@ -132,7 +132,7 @@ export default function RoomDetail() {
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-content font-bold">주요 서비스 및 편의시설</p>
 					</div>
-					<div className="grid grid-cols-4 gap-4 text-secondaryTextGray">
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-secondaryTextGray">
 						{roomInfo?.services.map((service, index) => (
 							<div className="flex items-center " key={index}>
 								<CheckIcon sx={{ fontSize: '16px' }} />
@@ -254,7 +254,7 @@ export default function RoomDetail() {
 				status={status}
 				name={name}
 			/>
-			{show && <TopBtn show={show} />}
+			{show && <TopBtn show={show} isOverlap />}
 		</div>
 	);
 }

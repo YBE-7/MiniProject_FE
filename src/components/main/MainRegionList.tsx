@@ -47,7 +47,7 @@ const MainRegionList = () => {
 					<div className="my-2 ">
 						{region.map((item, idx) => (
 							<button
-								className={`rounded-full py-1 px-2 w-[80px] mr-2 hover:bg-bgGray ${
+								className={`rounded-full py-1 px-2 w-14 lg:w-20 mr-2 hover:bg-bgGray text-sm lg:text-[16px] ${
 									btnActive === item.data
 										? 'bg-hoverBg text-blue font-semibold'
 										: 'bg-white text-black border-2 border-bgGray '

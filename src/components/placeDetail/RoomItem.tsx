@@ -21,11 +21,13 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 	const checkInDate = useRecoilValue(checkInDateState);
 	const checkOutDate = useRecoilValue(checkOutDateState);
 	const [, setOrderItem] = useRecoilState(orderItemState);
-	const [freeCancle, setFreeCancle] =  useState(false);
+	const [freeCancle, setFreeCancle] = useState(false);
 
 	const handleItemClick = () => {
 		if (name !== undefined) {
-			navigate(`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`);
+			navigate(
+				`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`,
+			);
 		}
 	};
 
@@ -42,9 +44,13 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 			);
 			if (response.status === 201) {
 				swal({ title: '장바구니 담기에 성공하였습니다.', icon: 'success' });
-			} 
+			}
 		} catch (error) {
-			swal({ title: '실패', text :"장바구니에 담을 수 있는 개수를 초과하였습니다.", icon: 'error' });
+			swal({
+				title: '실패',
+				text: '장바구니에 담을 수 있는 개수를 초과하였습니다.',
+				icon: 'error',
+			});
 		}
 	};
 
@@ -86,27 +92,26 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 			date.getFullYear() !== today.getFullYear() ||
 			date.getMonth() !== today.getMonth() ||
 			date.getDate() !== today.getDate()
-		  );
-	}
+		);
+	};
 
 	const getDayBeforCheckIn = () => {
 		const date = new Date(checkInDate);
 		date.setDate(date.getDate() - 1);
-		
+
 		return date;
-	}
+	};
 
 	useEffect(() => {
 		setFreeCancle(isFreeCancle());
-	},[checkInDate])
+	}, [checkInDate]);
 
-	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());	
-	
+	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());
 
 	return (
-		<div className="flex py-5 justify-between border-b border-borderGray cursor-pointer">
-			<div>
-				<div className="w-[320px] h-[160px] rounded-lg">
+		<div className="flex flex-wrap py-5 justify-between border-b border-borderGray cursor-pointer">
+			<div className="mb-4">
+				<div className="w-full lg:w-[320px] lg:h-[160px] rounded-lg">
 					<RoomImageSwiper items={roomItem.images} />
 				</div>
 				<p className="text-title text-black font-bold mt-3">{roomItem.name}</p>
@@ -116,7 +121,7 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 					<p>기준2인 / 최대 {roomItem.capacity}인</p>
 				</div>
 			</div>
-			<div className="p-4 w-[386px] h-fit border-borderGray border rounded-lg">
+			<div className="p-4 w-full lg:w-[386px] h-fit border-borderGray border rounded-lg">
 				<div className="flex text-sm justify-between ">
 					<span className="text-black font-semibold">숙박</span>
 					<div className="flex items-center" onClick={handleItemClick}>
@@ -143,8 +148,9 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 					{roomItem.status === 'OK' ? (
 						<div className="flex items-center">
 							<p className="text-green text-sm font-bold ml-3">
-								{freeCancle ? `무료취소 (${cancleDate} 17:00전까지)` : `취소 및 환불 불가` }
-								
+								{freeCancle
+									? `무료취소 (${cancleDate} 17:00전까지)`
+									: `취소 및 환불 불가`}
 							</p>
 							<KeyboardArrowRightIcon
 								sx={{ fill: '#008161', fontSize: '16px' }}

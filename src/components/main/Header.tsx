@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import DehazeOutlinedIcon from '@mui/icons-material/DehazeOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MainHeaderProps } from 'types/MainPage.type';
 import { getCartCount } from 'hooks/common/useQueryCartCount';
 import { Badge } from '@material-tailwind/react';
@@ -39,7 +39,7 @@ const Header = ({ handleOpen }: MainHeaderProps) => {
 				cancelButtonColor: '#d33',
 				confirmButtonText: '확인',
 				cancelButtonText: '취소', // 취소 버튼 텍스트 추가
-			}).then((result: any) => {
+			}).then((result: { isConfirmed: boolean }) => {
 				if (result.isConfirmed) {
 					navigate('/login');
 				}
@@ -53,13 +53,13 @@ const Header = ({ handleOpen }: MainHeaderProps) => {
 		navigate('/search');
 	};
 	return (
-		<div className=" bg-white fixed left-0 top-0 w-screen drop-shadow-sm  z-10">
-			<div className=" h-[56px] w-[768px] px-4 m-auto top-0 left-0 flex justify-between items-center ">
+		<div className="bg-white fixed left-0 top-0 w-full drop-shadow-sm z-10">
+			<div className="h-[56px] max-w-3xl px-4 m-auto top-0 left-0 flex justify-between items-center">
 				<div className="cursor-pointer" onClick={handleOpen}>
 					<DehazeOutlinedIcon fontSize="small" />
 				</div>
-				<div onClick={handleInputBtn}>
-					<div className="border-solid border-[1px] px-4 border-gray rounded-full w-[650px] flex justify-between items-center cursor-pointer">
+				<div onClick={handleInputBtn} className="w-full px-4 lg:px-6">
+					<div className="border-solid border-[1px] px-4 border-gray rounded-full flex justify-between items-center cursor-pointer">
 						<span className=" text-textGray text-sm py-1.5">
 							무엇을 하고 놀까요 ?
 						</span>
