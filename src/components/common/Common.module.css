@@ -26,4 +26,13 @@
 	.topBtn {
 		@apply fixed right-4 lg:left-[calc(50%+320px)] z-20 w-11 h-11 rounded-full bg-white flex justify-center items-center border border-gray cursor-pointer hover:bg-bgGray;
 	}
+	.footLinks {
+		@apply mt-3 text-textGray flex flex-wrap;
+	}
+	.footLinks li {
+		margin-bottom: 6px;
+	}
+	.footLinks li a {
+		display: block;
+	}
 }
