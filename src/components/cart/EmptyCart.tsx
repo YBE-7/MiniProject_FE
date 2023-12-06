@@ -7,7 +7,7 @@ const EmptyCart = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="bg-white h-[40%] w-[768px] m-auto top-0 left-0 py-5 px-5">
+		<div className="bg-white h-[40%] lg:max-w-[768px] m-auto top-0 left-0 py-5 px-5">
 			<div className=" flex flex-col justify-center items-center py-4 m-auto left-0 t-10">
 				<ShoppingCartOutlined sx={{ fill: '#e7e7e7', fontSize: '90px' }} />
 				<div className="mt-3">

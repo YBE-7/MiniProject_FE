@@ -180,7 +180,7 @@ const Cart = () => {
 					/>
 					<CartBottom totalPrice={totalPrice} />
 					<div className="bg-white ${show ? 'h-[150px]' : 'h-[110px]'} shadow-inner w-screen fixed bottom-0  left-0">
-						<div className="w-[768px] m-auto top-0 left-0 pb-3">
+						<div className="w-full lg:max-w-[768px] m-auto top-0 left-0 p-3 lg:p-0 pb-3">
 							<div className="flex justify-between items-center py-2">
 								<div className="font-semibold  text-sm">
 									총 {cartItems.length}건
