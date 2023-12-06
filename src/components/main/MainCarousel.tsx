@@ -93,11 +93,16 @@ const MainCarousel = () => {
 				<Swiper
 					modules={[Navigation, Pagination, Scrollbar, A11y]}
 					spaceBetween={10}
-					slidesPerView={2.5}
+					slidesPerView={1}
 					// scrollbar={{ draggable: true }}
 					navigation
 					pagination={{
 						type: 'fraction',
+					}}
+					breakpoints={{
+						768: {
+							slidesPerView: 2.5,
+						},
 					}}
 					className={styles.mainSwiper}
 				>

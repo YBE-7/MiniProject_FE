@@ -2,6 +2,14 @@
 
 @layer components {
 	.linkItem {
-		@apply font-semibold px-4 p-2 border-borderGray border-[1px] rounded-md;
+		@apply font-semibold text-sm lg:text-[16px] px-2 lg:px-4 py-2 border-borderGray border-[1px] rounded-md;
+	}
+	.linkItem svg {
+		vertical-align: bottom;
+	}
+	@media screen and (max-width: 767px) {
+		.linkItem svg {
+			vertical-align: -7px;
+		}
 	}
 }

@@ -177,13 +177,13 @@ export default function PlaceDetail() {
 					</div>
 					<div className="flex w-full text-content font-bold text-black">
 						<button
-							className="w-full flex items-start border border-borderGray rounded px-3 py-[11px]"
+							className="w-3/4 lg:w-1/2 flex items-start border border-borderGray rounded px-3 py-[11px]"
 							onClick={handleCalendarClick}
 						>
 							{formattingDate}
 						</button>
 						<button
-							className="w-full flex items-start border border-borderGray rounded px-3 py-[11px]"
+							className="w-1/4 lg:w-1/2 flex items-start border border-borderGray rounded px-3 py-[11px]"
 							onClick={handleCapacityClick}
 						>
 							성인 {capacityValue}
@@ -238,7 +238,7 @@ export default function PlaceDetail() {
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-title font-bold">시실 및 서비스</p>
 					</div>
-					<div className="grid grid-cols-4 gap-4">
+					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
 						{accommodationInfo?.services.map((service, index) => (
 							<div key={index} className="flex items-center">
 								<CheckIcon />

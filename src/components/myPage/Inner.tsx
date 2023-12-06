@@ -53,7 +53,7 @@ const Inner = () => {
 	const { data, isLoading } = useQueryMyPage(now);
 	return (
 		<div className="pt-20 min-h-screen m-auto bg-white max-w-[768px] mx-auto">
-			<div className="pt-4.5 pl-6 pr-6 pb-7">
+			<div className="lg:pt-4.5 lg:pl-6 lg:pr-6 pb-7">
 				<div className="flex justify-between items-center">
 					<div className="text-content font-bold text-black cursor-default">
 						{name}
@@ -89,7 +89,7 @@ const Inner = () => {
 
 						<div className="pt-10 ">
 							<div
-								className="flex items-center w-full h-9 border border-gray rounded-md cursor-pointer justify-between ml-3 hover:bg-lightGray pl-4"
+								className="flex items-center w-full h-9 border border-gray rounded-md cursor-pointer justify-between hover:bg-lightGray pl-4"
 								onClick={() => setShowDateModal(true)}
 							>
 								{nowDate}
@@ -107,7 +107,7 @@ const Inner = () => {
 			{show && <TopBtn show={show} />}
 			{isLoading && <MyPageSkeleton />}
 			{data && data?.length > 0 && (
-				<div className="pr-6 pl-6">
+				<div className="lg:pr-6 lg:pl-6">
 					{data?.map((order, index) => (
 						<div
 							key={index}

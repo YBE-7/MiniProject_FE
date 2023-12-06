@@ -5,8 +5,8 @@ const ResultFooter = () => {
 	return (
 		<>
 			{' '}
-			<div className="bg-white h-[110px] shadow-inner w-screen fixed bottom-0  left-0">
-				<div className="w-[768px] m-auto top-0 left-0">
+			<div className="bg-white h-[110px] shadow-inner w-screen fixed bottom-0 left-0">
+				<div className="w-full lg:max-w-[768px] m-auto top-0 left-0 p-3 lg:p-0">
 					<div className="mt-4">
 						<img src={carImage} className="rounded-md mb-2" />
 					</div>
