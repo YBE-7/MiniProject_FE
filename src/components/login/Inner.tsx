@@ -14,16 +14,15 @@ import { validationLoginSchema } from 'utils/validateSchema';
 import { useFormik } from 'formik';
 import { useRecoilState } from 'recoil';
 import { signUpModalState } from 'recoil/atoms/signUpModalAtom';
-import { postLogin } from 'apis/axios';
+import { postLogin } from '../../apis/loginAPI';
 import swal from 'sweetalert';
 import { removeCookie, setCookie } from 'utils';
 import { dateState } from 'recoil/atoms/myPageAtom';
-import { error } from 'console';
 
 const Inner = () => {
 	const navigate = useNavigate();
-	const mailRef = useRef<any>(null);
-	const pwRef = useRef<any>(null);
+	const mailRef = useRef<HTMLInputElement>(null);
+	const pwRef = useRef<HTMLInputElement>(null);
 	const [showPwVis, setShowPwVis] = useState(false);
 	const [showPw, setShowPw] = useState(false);
 	const [showMail, setShowMail] = useState(false);

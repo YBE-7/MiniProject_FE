@@ -2,27 +2,18 @@ import React from 'react';
 import { getDayOfWeek } from 'hooks/common/getDayOfWeek';
 import { getDateDifference } from 'hooks/common/getDateDifference';
 import { useNavigate } from 'react-router';
+import { reservationCardProps } from 'types/ReservationCard.type';
 const ReservationCard = ({
 	code,
-	accomodationName,
-	accomodationImage,
 	checkinDate,
 	checkoutDate,
-	isUsed,
 	accomodationId,
-	capacity,
+	accomodationImage,
+	isUsed,
+	accomodationName,
 	roomName,
-}: {
-	code: string;
-	accomodationName: string;
-	accomodationImage: string;
-	checkinDate: string;
-	checkoutDate: string;
-	isUsed: boolean;
-	accomodationId: number;
-	capacity: number;
-	roomName: string;
-}) => {
+	capacity,
+}: reservationCardProps) => {
 	const checkinDayOfWeek = getDayOfWeek(checkinDate);
 	const checkoutDayOfWeek = getDayOfWeek(checkoutDate);
 	const differenceInDays = getDateDifference(checkinDate, checkoutDate);

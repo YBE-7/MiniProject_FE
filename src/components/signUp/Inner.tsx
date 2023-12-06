@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik';
 import { validationSignUpSchema } from 'utils/validateSchema';
 import styles from '../../components/login/Login.module.css';
-import { postJoin } from 'apis/axios';
+import { postJoin } from '../../apis/signUpAPI';
 import { useRecoilValue } from 'recoil';
 import { signUpModalState } from 'recoil/atoms/signUpModalAtom';
 import SignUpModal from 'components/login/SignUpModal';
@@ -138,15 +138,9 @@ const Inner = () => {
 					errorMessage = '이미 가입된 이메일입니다.';
 				} else {
 					for (let i = 0; i < e.response.data.error.data.length; i++) {
-						if (
-							e.response.data.error.data[i].message ===
-							'이메일이 올바르지 않습니다.'
-						) {
+						if (e.response.data.error.data[i].field === 'email') {
 							errorMessage = '잘못된 이메일 형식입니다.';
-						} else if (
-							e.response.data.error.data[i].message ===
-							'"^[a-zA-Z가-힣]{2,16}$"와 일치해야 합니다'
-						) {
+						} else if (e.response.data.error.data[i].field === 'name') {
 							errorMessage = '잘못된 이름 형식입니다.';
 						} else {
 							errorMessage = '잘못된 비밀번호 형식입니다.';
@@ -164,16 +158,6 @@ const Inner = () => {
 
 	const { values, touched, errors, handleChange, handleBlur, handleSubmit } =
 		formik;
-	console.log(
-		errors.mail,
-		errors.pw,
-		errors.name,
-		errors.checkPw,
-		values.mail,
-		values.pw,
-		values.name,
-		values.checkPw,
-	);
 
 	return (
 		<>
