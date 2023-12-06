@@ -8,7 +8,7 @@ import ReservationCard from './ReservationCard';
 import ReservationCardHeader from './ReservationCardHeader';
 import { logout } from 'utils';
 import { useNavigate } from 'react-router-dom';
-import { getUserInfo } from 'apis/axios';
+import { getUserInfo } from '../../apis/myPageAPI';
 
 import TopBtn from 'components/common/TopBtn';
 import useScrollToShow from 'hooks/common/handleScroll';
@@ -26,10 +26,7 @@ const Inner = () => {
 	const show = useScrollToShow(false, 200);
 
 	useEffect(() => {
-		const localVal = date;
-		const numbersOnly =
-			localVal !== null ? parseInt(localVal.replace(/\D/g, ''), 10) : 0;
-		setNow(numbersOnly);
+		setNow(date !== null ? parseInt(date.replace(/\D/g, ''), 10) : 0);
 	}, [date, setDate]);
 
 	const handleDateModalClose = () => {
@@ -108,29 +105,34 @@ const Inner = () => {
 			{isLoading && <MyPageSkeleton />}
 			{data && data?.length > 0 && (
 				<div className="pr-6 pl-6">
-					{data?.map((order, index) => (
-						<div
-							key={index}
-							className="border border-gray rounded-lg mb-8 shadow-md overflow-hidden"
-						>
-							<ReservationCardHeader orderDate={order.orderDate} />
-							{order.orderItems?.map((item, itemIndex) => (
-								<React.Fragment key={itemIndex}>
-									<ReservationCard
-										code={item.code}
-										accomodationName={item.accommodation.name}
-										accomodationImage={item.accommodation.image}
-										checkinDate={item.checkinDate}
-										checkoutDate={item.checkoutDate}
-										isUsed={item.isUsed}
-										accomodationId={item.accommodation.id}
-										capacity={item.roomType.capacity}
-										roomName={item.roomType.name}
-									/>
-								</React.Fragment>
-							))}
-						</div>
-					))}
+					{data?.map(
+						(
+							order: { orderDate: string; orderItems: any[] },
+							index: React.Key | null | undefined,
+						) => (
+							<div
+								key={index}
+								className="border border-gray rounded-lg mb-8 shadow-md overflow-hidden"
+							>
+								<ReservationCardHeader orderDate={order.orderDate} />
+								{order.orderItems?.map((item, itemIndex) => (
+									<React.Fragment key={itemIndex}>
+										<ReservationCard
+											code={item.code}
+											accomodationName={item.accommodation.name}
+											accomodationImage={item.accommodation.image}
+											checkinDate={item.checkinDate}
+											checkoutDate={item.checkoutDate}
+											isUsed={item.isUsed}
+											accomodationId={item.accommodation.id}
+											capacity={item.roomType.capacity}
+											roomName={item.roomType.name}
+										/>
+									</React.Fragment>
+								))}
+							</div>
+						),
+					)}
 				</div>
 			)}
 			{data?.length === 0 && (
