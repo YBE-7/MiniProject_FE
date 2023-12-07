@@ -5,8 +5,6 @@ import banner from '../../assets/images/banner.png';
 import StarIcon from '@mui/icons-material/Star';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import Footer from 'components/placeDetail/Footer';
 import CheckIcon from '@mui/icons-material/Check';
 import RoomItem from 'components/placeDetail/RoomItem';
@@ -27,6 +25,8 @@ import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
 import swal from 'sweetalert';
 import useScrollToShow from 'hooks/common/handleScroll';
 import TopBtn from 'components/common/TopBtn';
+import { useNavigate } from 'react-router-dom';
+
 
 export default function PlaceDetail() {
 	const { accommodationdId } = useParams();
@@ -44,6 +44,8 @@ export default function PlaceDetail() {
 	);
 	const capacityValue = useRecoilValue(capacityState);
 	const show = useScrollToShow(false, 200);
+
+	const navigate = useNavigate();
 
 	const getAccommodationDetail = async () => {
 		if (accommodationdId !== undefined) {
@@ -75,6 +77,7 @@ export default function PlaceDetail() {
 				setRoomsInfo(response.data.data);
 			} catch (error) {
 				console.error('Failed to load roomtype information', error);
+				navigate('/404', { replace: true });
 			}
 		}
 	};
