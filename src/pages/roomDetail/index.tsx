@@ -53,6 +53,7 @@ export default function RoomDetail() {
 				setRoomInfo(response.data.data);
 			} catch (error) {
 				console.error('Failed to load Room detail info', error);
+				navigate('/404', { replace: true });
 			}
 		}
 	};
