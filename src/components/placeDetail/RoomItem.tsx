@@ -7,13 +7,13 @@ import RoomImageSwiper from 'components/common/RoomImageSwiper';
 import { RoomProps } from 'types/Place';
 import { useNavigate, useParams } from 'react-router';
 import { formatNumberWithCommas } from 'utils/numberComma';
-import cartAPI from 'apis/cartAPI';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
 import { orderItemState } from 'recoil/atoms/orderAtom';
 import { formatDateWithoutYear } from 'utils/formatDate';
+import saveRoomtoCart from 'hooks/cart/useCart';
 
 export default function RoomItem({ roomItem, name }: RoomProps) {
 	const navigate = useNavigate();
@@ -33,34 +33,13 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 
 	const formattedPrice = formatNumberWithCommas(roomItem.price);
 
-	const saveRoomtoCart = async () => {
-		try {
-			const checkInDateString = checkInDate.toISOString().split('T')[0];
-			const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-			const response = await cartAPI.postRoomToCart(
-				roomItem.id,
-				checkInDateString,
-				checkOutDateString,
-			);
-			if (response.status === 201) {
-				swal({ title: '장바구니 담기에 성공하였습니다.', icon: 'success' });
-			}
-		} catch (error) {
-			swal({
-				title: '실패',
-				text: '장바구니에 담을 수 있는 개수를 초과하였습니다.',
-				icon: 'error',
-			});
-		}
-	};
-
 	const handleCartBtnClick = () => {
 		const accessToken = getCookie('accessToken');
 
 		if (!accessToken) {
 			swal({ title: '로그인이 필요한 서비스입니다.', icon: 'warning' });
 			navigate('/login');
-		} else saveRoomtoCart();
+		} else saveRoomtoCart(checkInDate, checkOutDate, roomItem.id);
 	};
 
 	const handleOrderBtnClick = () => {

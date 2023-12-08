@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CheckIcon from '@mui/icons-material/Check';
 import Header from 'components/roomDetail/Header';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
@@ -17,6 +16,7 @@ import { checkInDateState } from 'recoil/atoms/dateAtom';
 import { formatDateWithoutYear, getDaysBeforeCheckIn } from 'utils/formatDate';
 import TopBtn from 'components/common/TopBtn';
 import useScrollToShow from 'hooks/common/handleScroll';
+import Services from 'components/common/Services';
 
 export default function RoomDetail() {
 	const { roomId } = useParams();
@@ -129,19 +129,7 @@ export default function RoomDetail() {
 						<p>금연 객실</p>
 					</div>
 				</div>
-				<div className="pt-4 pb-3">
-					<div className="min-h-[3rem] flex items-center">
-						<p className="text-content font-bold">주요 서비스 및 편의시설</p>
-					</div>
-					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4 text-secondaryTextGray">
-						{roomInfo?.services.map((service, index) => (
-							<div className="flex items-center " key={index}>
-								<CheckIcon sx={{ fontSize: '16px' }} />
-								<span className="pl-1">{service}</span>
-							</div>
-						))}
-					</div>
-				</div>
+				<Services services={roomInfo?.services}/>
 				<div className="border border-borderGray p-4 rounded-lg mt-5">
 					<div>
 						<span className="text-sm text-black font-bold">숙박</span>

@@ -5,10 +5,10 @@ import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { footerFormatFullDateRange } from 'utils/formatDate';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
-import cartAPI from 'apis/cartAPI';
 import { RoomDetailInfo } from 'types/Place';
 import { useNavigate } from 'react-router-dom';
 import { orderItemState } from 'recoil/atoms/orderAtom';
+import saveRoomtoCart from 'hooks/cart/useCart';
 
 interface FooterProps {
 	formattedPrice: string;
@@ -42,28 +42,6 @@ export default function Footer({
 		);
 	};
 
-	const saveRoomtoCart = async () => {
-		try {
-			const checkInDateString = checkInDate.toISOString().split('T')[0];
-			const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-
-			if (roomInfo !== undefined) {
-				const response = await cartAPI.postRoomToCart(
-					roomInfo.id,
-					checkInDateString,
-					checkOutDateString,
-				);
-				if (response.status === 201) {
-					swal({ title: '장바구니 담기에 성공하였습니다.', icon: 'success' });
-				} else {
-					swal({ title: '장바구니 담기에 실패하였습니다 .', icon: 'error' });
-				}
-			}
-		} catch (error) {
-			console.error('Failed to load accommodation details:', error);
-		}
-	};
-
 	useEffect(() => {
 		setFreeCancle(isFreeCancle());
 	}, [checkInDate]);
@@ -74,7 +52,7 @@ export default function Footer({
 		if (!accessToken) {
 			swal({ title: '로그인이 필요한 서비스입니다.', icon: 'warning' });
 			navigate('/login');
-		} else saveRoomtoCart();
+		} else saveRoomtoCart(checkInDate, checkOutDate, roomInfo?.id);
 	};
 
 	const handleOrderBtnClick = () => {

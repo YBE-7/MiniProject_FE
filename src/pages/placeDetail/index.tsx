@@ -26,6 +26,7 @@ import swal from 'sweetalert';
 import useScrollToShow from 'hooks/common/handleScroll';
 import TopBtn from 'components/common/TopBtn';
 import { useNavigate } from 'react-router-dom';
+import Services from 'components/common/Services';
 
 
 export default function PlaceDetail() {
@@ -56,7 +57,10 @@ export default function PlaceDetail() {
 				setAccommodationInfo(response.data.data);
 			} catch (error) {
 				console.error('Failed to load accommodation details:', error);
-			}
+				navigate('/404', { replace: true });
+
+				}
+				
 			setIsLoading(false);
 		}
 	};
@@ -237,19 +241,7 @@ export default function PlaceDetail() {
 					</div>
 					<p>{accommodationInfo?.introduction}</p>
 				</div>
-				<div className="pt-5">
-					<div className="min-h-[3rem] flex items-center">
-						<p className="text-title font-bold">시실 및 서비스</p>
-					</div>
-					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-						{accommodationInfo?.services.map((service, index) => (
-							<div key={index} className="flex items-center">
-								<CheckIcon />
-								<span>{service}</span>
-							</div>
-						))}
-					</div>
-				</div>
+				<Services services={accommodationInfo?.services}/>
 				<div className="py-5">
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-title font-bold ">취소 안내</p>
