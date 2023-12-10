@@ -9,11 +9,13 @@ export default function useGetRoomDetailInfo(roomId : string | undefined, price 
     const [formattedPrice, setFormattedPrice] = useState<string>('');
     const navigate = useNavigate();
     const [roomInfo, setRoomInfo] = useState<RoomDetailInfo>();
+    const [isLoading, setIsLoading] = useState(true);
 
 
     useEffect(() => {
         const getRoomDetail = async () => {
             if (roomId !== undefined) {
+                setIsLoading(true);
                 try {
                     const id = +roomId;
                     const response = await accommodationAPI.getRoomDetail(id);
@@ -22,6 +24,7 @@ export default function useGetRoomDetailInfo(roomId : string | undefined, price 
                     console.error('Failed to load Room detail info', error);
                     navigate('/404', { replace: true });
                 }
+                setIsLoading(false);
             }
         };
 
@@ -35,5 +38,5 @@ export default function useGetRoomDetailInfo(roomId : string | undefined, price 
         }
     }, [price]);
 
-  return [roomInfo , formattedPrice];
+  return [isLoading, roomInfo , formattedPrice];
 }

@@ -18,6 +18,7 @@ import Services from 'components/common/Services';
 import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 import useScrollToTop from 'hooks/common/useScrollToTop';
 import useGetRoomDetailInfo from 'hooks/roomDetail/useGetRoomDetailInfo';
+import RoomDetailSkeleton from 'components/roomDetail/RoomDetailSkeleton';
 
 export default function RoomDetail() {
 	const { roomId } = useParams();
@@ -32,7 +33,7 @@ export default function RoomDetail() {
 	const cancleDate = getDayBeforeCheckIn(checkInDate);
 	const show = useScrollToShow(false, 200);
 	const navigate = useNavigate();
-	const [roomInfo, formattedPrice] = useGetRoomDetailInfo(roomId, price) as [RoomDetailInfo, string];
+	const [isLoading, roomInfo, formattedPrice] = useGetRoomDetailInfo(roomId, price) as [boolean, RoomDetailInfo, string];
 
 	useScrollToTop();
 
@@ -47,6 +48,10 @@ export default function RoomDetail() {
 	const handleBackBtnClick = () => {
 		navigate(-1);
 	};
+
+	 if(isLoading) {
+		return <RoomDetailSkeleton />
+	}
 
 	return (
 		<div className="justify-center m-auto text-content text-black">

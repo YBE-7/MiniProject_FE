@@ -24,7 +24,7 @@ import TopBtn from 'components/common/TopBtn';
 import Services from 'components/common/Services';
 import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
 import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
-import PlaceDatilSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
+import PlaceDetailSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
 
 
 export default function PlaceDetail() {
@@ -76,7 +76,7 @@ export default function PlaceDetail() {
 	};
 
 	if (isLoading) {
-		return <PlaceDatilSkeleton />;
+		return <PlaceDetailSkeleton />;
 
 	}
 

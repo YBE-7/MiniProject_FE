@@ -2,7 +2,7 @@ import CommonHeader from 'components/common/CommonHeader';
 import React from 'react';
 import RoomItemSkeleton from './RoomItemSkeleton';
 
-export default function PlaceDatilSkeleton() {
+export default function PlaceDetailSkeleton() {
 	return (
 		<div>
 			<CommonHeader name={' '} isHomeIcon isCartIcon />
