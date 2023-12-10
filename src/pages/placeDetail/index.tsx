@@ -1,4 +1,3 @@
-// import Header from 'components/placeDetail/Header';
 import React, { useEffect, useRef, useState } from 'react';
 import CommonHeader from 'components/common/CommonHeader';
 import banner from '../../assets/images/banner.png';
@@ -6,7 +5,6 @@ import StarIcon from '@mui/icons-material/Star';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Footer from 'components/placeDetail/Footer';
-import CheckIcon from '@mui/icons-material/Check';
 import RoomItem from 'components/placeDetail/RoomItem';
 import SoldOutRoomItem from 'components/placeDetail/SoldOutRoomItem';
 import KakaoMap from 'components/placeDetail/KakaoMap';
@@ -18,7 +16,6 @@ import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import ImageSwiper from 'components/common/ImageSwiper';
 import { useParams } from 'react-router';
 import { PlaceDetailInfo } from 'types/Place';
-import Loading from 'components/placeDetail/Loading';
 import { capacityState } from 'recoil/atoms/capacityAtom';
 import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
 import swal from 'sweetalert';
@@ -27,6 +24,7 @@ import TopBtn from 'components/common/TopBtn';
 import Services from 'components/common/Services';
 import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
 import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
+import PlaceDatilSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
 
 
 export default function PlaceDetail() {
@@ -78,7 +76,8 @@ export default function PlaceDetail() {
 	};
 
 	if (isLoading) {
-		return <Loading />;
+		return <PlaceDatilSkeleton />;
+
 	}
 
 	return (
@@ -89,7 +88,6 @@ export default function PlaceDetail() {
 				handleOpen={handleCapacityClick}
 			/>
 			<CommonHeader name={accommodationInfo?.name} isHomeIcon isCartIcon />
-			{/* <Header name={accommodationInfo?.name} /> */}
 			<div className="relative mt-[48px] flex-row">
 				<div className="ml-[-1.25rem] mr-[-1.25rem]">
 					<ImageSwiper items={accommodationInfo?.images} />

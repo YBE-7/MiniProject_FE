@@ -12,7 +12,7 @@ import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
 import { orderItemState } from 'recoil/atoms/orderAtom';
-import { formatDateWithoutYear, getDayBeforeCheckIn } from 'utils/formatDate';
+import { getDayBeforeCheckIn } from 'utils/formatDate';
 import saveRoomtoCart from 'utils/savsRoomtoCart';
 import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 
