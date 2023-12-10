@@ -25,6 +25,7 @@ import Services from 'components/common/Services';
 import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
 import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
 import PlaceDetailSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
+import useScrollToTop from 'hooks/common/useScrollToTop';
 
 
 export default function PlaceDetail() {
@@ -42,6 +43,7 @@ export default function PlaceDetail() {
 	const roomsInfo = useGetRoomsInfo(accommodationdId);
 	const mapRef = useRef<HTMLDivElement | null>(null); 
 
+	useScrollToTop();
 
 	useEffect(() => {
 		setFormattingDate(
