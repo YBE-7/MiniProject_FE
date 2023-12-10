@@ -17,27 +17,22 @@ import { useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import ImageSwiper from 'components/common/ImageSwiper';
 import { useParams } from 'react-router';
-import { PlaceDetailInfo, RoomDetailInfos } from 'types/Place';
-import accommodationAPI from 'apis/accommodationAPI';
+import { PlaceDetailInfo } from 'types/Place';
 import Loading from 'components/placeDetail/Loading';
 import { capacityState } from 'recoil/atoms/capacityAtom';
 import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
 import swal from 'sweetalert';
 import useScrollToShow from 'hooks/common/handleScroll';
 import TopBtn from 'components/common/TopBtn';
-import { useNavigate } from 'react-router-dom';
 import Services from 'components/common/Services';
+import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
+import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
 
 
 export default function PlaceDetail() {
 	const { accommodationdId } = useParams();
-	const [accommodationInfo, setAccommodationInfo] = useState<PlaceDetailInfo>();
-	const [roomsInfo, setRoomsInfo] = useState<RoomDetailInfos[]>();
-	const [isLoading, setIsLoading] = useState(true);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isCapacityModalOpen, setIsCapacityModalOpen] = useState(false);
-
 	const checkInDate = useRecoilValue<Date>(checkInDateState);
 	const checkOutDate = useRecoilValue<Date>(checkOutDateState);
 	const [formattingDate, setFormattingDate] = useState(
@@ -45,55 +40,10 @@ export default function PlaceDetail() {
 	);
 	const capacityValue = useRecoilValue(capacityState);
 	const show = useScrollToShow(false, 200);
+	const [isLoading, accommodationInfo] = useGetAccommodationDetailInfo(accommodationdId) as [boolean, PlaceDetailInfo];
+	const roomsInfo = useGetRoomsInfo(accommodationdId);
+	const mapRef = useRef<HTMLDivElement | null>(null); 
 
-	const navigate = useNavigate();
-
-	const getAccommodationDetail = async () => {
-		if (accommodationdId !== undefined) {
-			setIsLoading(true);
-			try {
-				const id = +accommodationdId;
-				const response = await accommodationAPI.getPlaceDetail(id);
-				setAccommodationInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load accommodation details:', error);
-				navigate('/404', { replace: true });
-
-				}
-				
-			setIsLoading(false);
-		}
-	};
-
-	const getRoomsInfo = async () => {
-		if (accommodationdId !== undefined) {
-			try {
-				const id = +accommodationdId;
-				const checkInDateString = checkInDate.toISOString().split('T')[0];
-				const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-
-				const response = await accommodationAPI.getPlaceDetailRooms(
-					id,
-					checkInDateString,
-					checkOutDateString,
-					capacityValue,
-				);
-				setRoomsInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load roomtype information', error);
-				navigate('/404', { replace: true });
-			}
-		}
-	};
-
-	useEffect(() => {
-		getAccommodationDetail();
-		getRoomsInfo();
-	}, [accommodationdId]);
-
-	useEffect(() => {
-		getRoomsInfo();
-	}, [checkInDate, checkOutDate, capacityValue]);
 
 	useEffect(() => {
 		setFormattingDate(
@@ -116,18 +66,14 @@ export default function PlaceDetail() {
 				.then(() => {
 					swal('주소가 복사되었습니다.', { icon: 'success' });
 				})
-				.catch((err) => {
-					// This will be executed if the copying failed
+				.catch((error) => {
 					swal('주소 복사에 실패했습니다.', { icon: 'error' });
-					console.error('Error copying text: ', err);
+					console.error('Error copying text: ', error);
 				});
 		}
 	};
 
-	const mapRef = useRef<HTMLDivElement | null>(null); // KakaoMap 컴포넌트에 대한 참조 생성
-
 	const handleAddressClick = () => {
-		// KakaoMap 컴포넌트로 스크롤
 		mapRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
 

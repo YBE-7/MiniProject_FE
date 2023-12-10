@@ -8,7 +8,8 @@ import swal from 'sweetalert';
 import { RoomDetailInfo } from 'types/Place';
 import { useNavigate } from 'react-router-dom';
 import { orderItemState } from 'recoil/atoms/orderAtom';
-import saveRoomtoCart from 'hooks/cart/useCart';
+import saveRoomtoCart from 'utils/savsRoomtoCart';
+import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 
 interface FooterProps {
 	formattedPrice: string;
@@ -27,24 +28,12 @@ export default function Footer({
 	const checkOutDate = useRecoilValue<Date>(checkOutDateState);
 
 	const formattingDate = footerFormatFullDateRange(checkInDate, checkOutDate);
-	const [freeCancle, setFreeCancle] = useState(false);
 
 	const navigate = useNavigate();
 	const [, setOrderItem] = useRecoilState(orderItemState);
 
-	const isFreeCancle = () => {
-		const date = new Date(checkInDate);
-		const today = new Date();
-		return (
-			date.getFullYear() !== today.getFullYear() ||
-			date.getMonth() !== today.getMonth() ||
-			date.getDate() !== today.getDate()
-		);
-	};
-
-	useEffect(() => {
-		setFreeCancle(isFreeCancle());
-	}, [checkInDate]);
+	const freeCancle = useSetFreeCancleDate();
+	
 
 	const handleCartBtnClick = () => {
 		const accessToken = getCookie('accessToken');

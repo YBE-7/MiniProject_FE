@@ -12,8 +12,9 @@ import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
 import { orderItemState } from 'recoil/atoms/orderAtom';
-import { formatDateWithoutYear } from 'utils/formatDate';
-import saveRoomtoCart from 'hooks/cart/useCart';
+import { formatDateWithoutYear, getDayBeforeCheckIn } from 'utils/formatDate';
+import saveRoomtoCart from 'utils/savsRoomtoCart';
+import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 
 export default function RoomItem({ roomItem, name }: RoomProps) {
 	const navigate = useNavigate();
@@ -21,7 +22,10 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 	const checkInDate = useRecoilValue(checkInDateState);
 	const checkOutDate = useRecoilValue(checkOutDateState);
 	const [, setOrderItem] = useRecoilState(orderItemState);
-	const [freeCancle, setFreeCancle] = useState(false);
+	const freeCancle = useSetFreeCancleDate();
+	const accessToken = getCookie('accessToken');
+	const formattedPrice = formatNumberWithCommas(roomItem.price);
+	const cancleDate = getDayBeforeCheckIn(checkInDate);
 
 	const handleItemClick = () => {
 		if (name !== undefined) {
@@ -31,11 +35,7 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 		}
 	};
 
-	const formattedPrice = formatNumberWithCommas(roomItem.price);
-
 	const handleCartBtnClick = () => {
-		const accessToken = getCookie('accessToken');
-
 		if (!accessToken) {
 			swal({ title: '로그인이 필요한 서비스입니다.', icon: 'warning' });
 			navigate('/login');
@@ -63,29 +63,6 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 			}
 		}
 	};
-
-	const isFreeCancle = () => {
-		const date = new Date(checkInDate);
-		const today = new Date();
-		return (
-			date.getFullYear() !== today.getFullYear() ||
-			date.getMonth() !== today.getMonth() ||
-			date.getDate() !== today.getDate()
-		);
-	};
-
-	const getDayBeforCheckIn = () => {
-		const date = new Date(checkInDate);
-		date.setDate(date.getDate() - 1);
-
-		return date;
-	};
-
-	useEffect(() => {
-		setFreeCancle(isFreeCancle());
-	}, [checkInDate]);
-
-	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());
 
 	return (
 		<div className="flex flex-wrap py-5 justify-between border-b border-borderGray cursor-pointer">

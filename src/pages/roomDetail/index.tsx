@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from 'components/roomDetail/Header';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
@@ -8,34 +8,33 @@ import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Footer from 'components/roomDetail/Footer';
 import ImageSwiper from 'components/common/ImageSwiper';
 import { useLocation, useParams } from 'react-router';
-import accommodationAPI from 'apis/accommodationAPI';
 import { RoomDetailInfo } from 'types/Place';
-import { formatNumberWithCommas } from 'utils/numberComma';
 import { useRecoilValue } from 'recoil';
 import { checkInDateState } from 'recoil/atoms/dateAtom';
-import { formatDateWithoutYear, getDaysBeforeCheckIn } from 'utils/formatDate';
+import { getDayBeforeCheckIn, getDaysBeforeCheckIn } from 'utils/formatDate';
 import TopBtn from 'components/common/TopBtn';
 import useScrollToShow from 'hooks/common/handleScroll';
 import Services from 'components/common/Services';
+import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
+import useScrollToTop from 'hooks/common/useScrollToTop';
+import useGetRoomDetailInfo from 'hooks/roomDetail/useGetRoomDetailInfo';
 
 export default function RoomDetail() {
 	const { roomId } = useParams();
-	const [roomInfo, setRoomInfo] = useState<RoomDetailInfo>();
 	const location = useLocation();
 	const queryParams = new URLSearchParams(location.search);
 	const name = queryParams.get('name');
 	const status = queryParams.get('status');
 	const price = queryParams.get('price');
 	const checkInDate = useRecoilValue(checkInDateState);
-	const [freeCancle, setFreeCancle] = useState(false);
-	const [formattedPrice, setFormattedPrice] = useState<string>('');
 	const [datesBeforeCheckIn, setDatesBeforeCheckIn] = useState<string[]>([]);
-
+	const freeCancle = useSetFreeCancleDate();
+	const cancleDate = getDayBeforeCheckIn(checkInDate);
 	const show = useScrollToShow(false, 200);
+	const navigate = useNavigate();
+	const [roomInfo, formattedPrice] = useGetRoomDetailInfo(roomId, price) as [RoomDetailInfo, string];
 
-	useEffect(() => {
-		window.scrollTo(0, 0);
-	}, []);
+	useScrollToTop();
 
 	useEffect(() => {
 		const dates = [];
@@ -45,54 +44,9 @@ export default function RoomDetail() {
 		setDatesBeforeCheckIn(dates);
 	}, [checkInDate]);
 
-	const getRoomDetail = async () => {
-		if (roomId !== undefined) {
-			try {
-				const id = +roomId;
-				const response = await accommodationAPI.getRoomDetail(id);
-				setRoomInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load Room detail info', error);
-				navigate('/404', { replace: true });
-			}
-		}
-	};
-
-	useEffect(() => {
-		getRoomDetail();
-		if (price !== null) {
-			setFormattedPrice(formatNumberWithCommas(parseInt(price)));
-		}
-	}, [roomId]);
-
-	const navigate = useNavigate();
-
 	const handleBackBtnClick = () => {
 		navigate(-1);
 	};
-
-	const isFreeCancle = () => {
-		const date = new Date(checkInDate);
-		const today = new Date();
-		return (
-			date.getFullYear() !== today.getFullYear() ||
-			date.getMonth() !== today.getMonth() ||
-			date.getDate() !== today.getDate()
-		);
-	};
-
-	const getDayBeforCheckIn = () => {
-		const date = new Date(checkInDate);
-		date.setDate(date.getDate() - 1);
-
-		return date;
-	};
-
-	useEffect(() => {
-		setFreeCancle(isFreeCancle());
-	}, [checkInDate]);
-
-	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());
 
 	return (
 		<div className="justify-center m-auto text-content text-black">
