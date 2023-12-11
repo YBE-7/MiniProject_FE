@@ -7,13 +7,14 @@ import RoomImageSwiper from 'components/common/RoomImageSwiper';
 import { RoomProps } from 'types/Place';
 import { useNavigate, useParams } from 'react-router';
 import { formatNumberWithCommas } from 'utils/numberComma';
-import cartAPI from 'apis/cartAPI';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
 import { orderItemState } from 'recoil/atoms/orderAtom';
-import { formatDateWithoutYear } from 'utils/formatDate';
+import { getDayBeforeCheckIn } from 'utils/formatDate';
+import saveRoomtoCart from 'utils/savsRoomtoCart';
+import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 
 export default function RoomItem({ roomItem, name }: RoomProps) {
 	const navigate = useNavigate();
@@ -21,7 +22,10 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 	const checkInDate = useRecoilValue(checkInDateState);
 	const checkOutDate = useRecoilValue(checkOutDateState);
 	const [, setOrderItem] = useRecoilState(orderItemState);
-	const [freeCancle, setFreeCancle] = useState(false);
+	const freeCancle = useSetFreeCancleDate();
+	const accessToken = getCookie('accessToken');
+	const formattedPrice = formatNumberWithCommas(roomItem.price);
+	const cancleDate = getDayBeforeCheckIn(checkInDate);
 
 	const handleItemClick = () => {
 		if (name !== undefined) {
@@ -31,36 +35,11 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 		}
 	};
 
-	const formattedPrice = formatNumberWithCommas(roomItem.price);
-
-	const saveRoomtoCart = async () => {
-		try {
-			const checkInDateString = checkInDate.toISOString().split('T')[0];
-			const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-			const response = await cartAPI.postRoomToCart(
-				roomItem.id,
-				checkInDateString,
-				checkOutDateString,
-			);
-			if (response.status === 201) {
-				swal({ title: '장바구니 담기에 성공하였습니다.', icon: 'success' });
-			}
-		} catch (error) {
-			swal({
-				title: '실패',
-				text: '장바구니에 담을 수 있는 개수를 초과하였습니다.',
-				icon: 'error',
-			});
-		}
-	};
-
 	const handleCartBtnClick = () => {
-		const accessToken = getCookie('accessToken');
-
 		if (!accessToken) {
 			swal({ title: '로그인이 필요한 서비스입니다.', icon: 'warning' });
 			navigate('/login');
-		} else saveRoomtoCart();
+		} else saveRoomtoCart(checkInDate, checkOutDate, roomItem.id);
 	};
 
 	const handleOrderBtnClick = () => {
@@ -84,29 +63,6 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 			}
 		}
 	};
-
-	const isFreeCancle = () => {
-		const date = new Date(checkInDate);
-		const today = new Date();
-		return (
-			date.getFullYear() !== today.getFullYear() ||
-			date.getMonth() !== today.getMonth() ||
-			date.getDate() !== today.getDate()
-		);
-	};
-
-	const getDayBeforCheckIn = () => {
-		const date = new Date(checkInDate);
-		date.setDate(date.getDate() - 1);
-
-		return date;
-	};
-
-	useEffect(() => {
-		setFreeCancle(isFreeCancle());
-	}, [checkInDate]);
-
-	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());
 
 	return (
 		<div className="flex flex-wrap py-5 justify-between border-b border-borderGray cursor-pointer">

@@ -46,7 +46,6 @@ function Region() {
 	);
 
 	useEffect(() => {
-		// console.log('region changed to:', region);
 		setRegionOpen(false);
 		setOptionOpen(false);
 	}, [region]);
