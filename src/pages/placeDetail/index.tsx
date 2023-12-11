@@ -14,7 +14,7 @@ import { formatFullDateRangeWithoutYear } from 'utils/formatDate';
 import { useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import ImageSwiper from 'components/common/ImageSwiper';
-import { useParams } from 'react-router';
+import { useParams, useLocation } from 'react-router';
 import { PlaceDetailInfo } from 'types/Place';
 import { capacityState } from 'recoil/atoms/capacityAtom';
 import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
@@ -26,9 +26,12 @@ import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodation
 import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
 import PlaceDetailSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
 import useScrollToTop from 'hooks/common/useScrollToTop';
-
+import { Button, Tooltip } from '@material-tailwind/react';
+import { Share } from '@mui/icons-material';
+import useKakaoShare from 'hooks/placeDetail/useKakaoShare';
 
 export default function PlaceDetail() {
+	const location = useLocation();
 	const { accommodationdId } = useParams();
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isCapacityModalOpen, setIsCapacityModalOpen] = useState(false);
@@ -39,11 +42,20 @@ export default function PlaceDetail() {
 	);
 	const capacityValue = useRecoilValue(capacityState);
 	const show = useScrollToShow(false, 200);
-	const [isLoading, accommodationInfo] = useGetAccommodationDetailInfo(accommodationdId) as [boolean, PlaceDetailInfo];
+	const [isLoading, accommodationInfo] = useGetAccommodationDetailInfo(
+		accommodationdId,
+	) as [boolean, PlaceDetailInfo];
 	const roomsInfo = useGetRoomsInfo(accommodationdId);
-	const mapRef = useRef<HTMLDivElement | null>(null); 
+	const mapRef = useRef<HTMLDivElement | null>(null);
 
 	useScrollToTop();
+
+	// 카카오톡 메시지 공유 hooks
+	const { handleKakaoShare } = useKakaoShare(
+		location.pathname,
+		accommodationInfo,
+		roomsInfo,
+	);
 
 	useEffect(() => {
 		setFormattingDate(
@@ -77,9 +89,19 @@ export default function PlaceDetail() {
 		mapRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
 
+	const handleCopyClipBoard = async () => {
+		try {
+			await navigator.clipboard.writeText(
+				'https://mini-team-7.vercel.app' + location.pathname,
+			);
+			swal('클립보드에 링크가 복사되었어요.', { icon: 'success' });
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	if (isLoading) {
 		return <PlaceDetailSkeleton />;
-
 	}
 
 	return (
@@ -95,8 +117,34 @@ export default function PlaceDetail() {
 					<ImageSwiper items={accommodationInfo?.images} />
 				</div>
 				<div className="pt-3">
-					<div className="flex w-full justify-between">
+					<div className="lg:flex w-full lg:justify-between">
 						<p className="text-lg font-bold">{accommodationInfo?.name}</p>
+						<div className="w-[76px] ml-auto h-8">
+							<Tooltip content="링크 주소 복사">
+								<Button
+									onClick={handleCopyClipBoard}
+									size="sm"
+									variant="text"
+									className="p-2"
+								>
+									<Share sx={{ fontSize: '1.25rem' }} />
+								</Button>
+							</Tooltip>
+							<Tooltip content="카카오톡 공유">
+								<Button
+									onClick={handleKakaoShare}
+									size="sm"
+									variant="text"
+									className="p-2"
+								>
+									<img
+										src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+										alt="카카오톡 공유 보내기 버튼"
+										width={24}
+									/>
+								</Button>
+							</Tooltip>
+						</div>
 					</div>
 					<div className="flex items-center pt-[6px] pb-[2px]">
 						<LocationOnIcon sx={{ fill: '#0152cc' }} fontSize="small" />
@@ -187,7 +235,7 @@ export default function PlaceDetail() {
 					</div>
 					<p>{accommodationInfo?.introduction}</p>
 				</div>
-				<Services services={accommodationInfo?.services}/>
+				<Services services={accommodationInfo?.services} />
 				<div className="py-5">
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-title font-bold ">취소 안내</p>
