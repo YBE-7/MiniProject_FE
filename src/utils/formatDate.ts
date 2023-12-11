@@ -116,8 +116,17 @@ const formatDateToMMDD = (date : Date) => {
 	return `${month.toString().padStart(2, '0')}.${day.toString().padStart(2, '0')}`;
   };
   
+
+export const getDayBeforeCheckIn = (checkInDate : Date) => {
+    const date = new Date(checkInDate);
+    date.setDate(date.getDate() - 1);
+    return formatDateWithoutYear(date);
+
+};
+
 export const getDaysBeforeCheckIn = (checkInDate : Date, daysBefore : number) => {
 	const date = new Date(checkInDate);
 	date.setDate(date.getDate() - daysBefore);
 	return formatDateToMMDD(date);
 };
+

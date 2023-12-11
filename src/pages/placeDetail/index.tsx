@@ -1,4 +1,3 @@
-// import Header from 'components/placeDetail/Header';
 import React, { useEffect, useRef, useState } from 'react';
 import CommonHeader from 'components/common/CommonHeader';
 import banner from '../../assets/images/banner.png';
@@ -6,7 +5,6 @@ import StarIcon from '@mui/icons-material/Star';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import Footer from 'components/placeDetail/Footer';
-import CheckIcon from '@mui/icons-material/Check';
 import RoomItem from 'components/placeDetail/RoomItem';
 import SoldOutRoomItem from 'components/placeDetail/SoldOutRoomItem';
 import KakaoMap from 'components/placeDetail/KakaoMap';
@@ -17,26 +15,23 @@ import { useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import ImageSwiper from 'components/common/ImageSwiper';
 import { useParams } from 'react-router';
-import { PlaceDetailInfo, RoomDetailInfos } from 'types/Place';
-import accommodationAPI from 'apis/accommodationAPI';
-import Loading from 'components/placeDetail/Loading';
+import { PlaceDetailInfo } from 'types/Place';
 import { capacityState } from 'recoil/atoms/capacityAtom';
 import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
 import swal from 'sweetalert';
 import useScrollToShow from 'hooks/common/handleScroll';
 import TopBtn from 'components/common/TopBtn';
-import { useNavigate } from 'react-router-dom';
+import Services from 'components/common/Services';
+import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
+import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
+import PlaceDetailSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
+import useScrollToTop from 'hooks/common/useScrollToTop';
 
 
 export default function PlaceDetail() {
 	const { accommodationdId } = useParams();
-	const [accommodationInfo, setAccommodationInfo] = useState<PlaceDetailInfo>();
-	const [roomsInfo, setRoomsInfo] = useState<RoomDetailInfos[]>();
-	const [isLoading, setIsLoading] = useState(true);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isCapacityModalOpen, setIsCapacityModalOpen] = useState(false);
-
 	const checkInDate = useRecoilValue<Date>(checkInDateState);
 	const checkOutDate = useRecoilValue<Date>(checkOutDateState);
 	const [formattingDate, setFormattingDate] = useState(
@@ -44,52 +39,11 @@ export default function PlaceDetail() {
 	);
 	const capacityValue = useRecoilValue(capacityState);
 	const show = useScrollToShow(false, 200);
+	const [isLoading, accommodationInfo] = useGetAccommodationDetailInfo(accommodationdId) as [boolean, PlaceDetailInfo];
+	const roomsInfo = useGetRoomsInfo(accommodationdId);
+	const mapRef = useRef<HTMLDivElement | null>(null); 
 
-	const navigate = useNavigate();
-
-	const getAccommodationDetail = async () => {
-		if (accommodationdId !== undefined) {
-			setIsLoading(true);
-			try {
-				const id = +accommodationdId;
-				const response = await accommodationAPI.getPlaceDetail(id);
-				setAccommodationInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load accommodation details:', error);
-			}
-			setIsLoading(false);
-		}
-	};
-
-	const getRoomsInfo = async () => {
-		if (accommodationdId !== undefined) {
-			try {
-				const id = +accommodationdId;
-				const checkInDateString = checkInDate.toISOString().split('T')[0];
-				const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-
-				const response = await accommodationAPI.getPlaceDetailRooms(
-					id,
-					checkInDateString,
-					checkOutDateString,
-					capacityValue,
-				);
-				setRoomsInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load roomtype information', error);
-				navigate('/404', { replace: true });
-			}
-		}
-	};
-
-	useEffect(() => {
-		getAccommodationDetail();
-		getRoomsInfo();
-	}, [accommodationdId]);
-
-	useEffect(() => {
-		getRoomsInfo();
-	}, [checkInDate, checkOutDate, capacityValue]);
+	useScrollToTop();
 
 	useEffect(() => {
 		setFormattingDate(
@@ -112,23 +66,20 @@ export default function PlaceDetail() {
 				.then(() => {
 					swal('주소가 복사되었습니다.', { icon: 'success' });
 				})
-				.catch((err) => {
-					// This will be executed if the copying failed
+				.catch((error) => {
 					swal('주소 복사에 실패했습니다.', { icon: 'error' });
-					console.error('Error copying text: ', err);
+					console.error('Error copying text: ', error);
 				});
 		}
 	};
 
-	const mapRef = useRef<HTMLDivElement | null>(null); // KakaoMap 컴포넌트에 대한 참조 생성
-
 	const handleAddressClick = () => {
-		// KakaoMap 컴포넌트로 스크롤
 		mapRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
 
 	if (isLoading) {
-		return <Loading />;
+		return <PlaceDetailSkeleton />;
+
 	}
 
 	return (
@@ -139,7 +90,6 @@ export default function PlaceDetail() {
 				handleOpen={handleCapacityClick}
 			/>
 			<CommonHeader name={accommodationInfo?.name} isHomeIcon isCartIcon />
-			{/* <Header name={accommodationInfo?.name} /> */}
 			<div className="relative mt-[48px] flex-row">
 				<div className="ml-[-1.25rem] mr-[-1.25rem]">
 					<ImageSwiper items={accommodationInfo?.images} />
@@ -237,19 +187,7 @@ export default function PlaceDetail() {
 					</div>
 					<p>{accommodationInfo?.introduction}</p>
 				</div>
-				<div className="pt-5">
-					<div className="min-h-[3rem] flex items-center">
-						<p className="text-title font-bold">시실 및 서비스</p>
-					</div>
-					<div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-						{accommodationInfo?.services.map((service, index) => (
-							<div key={index} className="flex items-center">
-								<CheckIcon />
-								<span>{service}</span>
-							</div>
-						))}
-					</div>
-				</div>
+				<Services services={accommodationInfo?.services}/>
 				<div className="py-5">
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-title font-bold ">취소 안내</p>

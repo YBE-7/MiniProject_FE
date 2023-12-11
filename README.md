@@ -299,6 +299,67 @@ Jira를 간단하게 작성하여 서로 작업 내용을 공유하니까 다른
 
 <br/>
 
+## KPT 보완사항
+<details>
+<summary>김지민</summary>
+  
+  > 1. 커스텀 훅 생성으로 코드 재사용
+>   2. 비즈니스 로직 분리
+>   3. 스켈레톤 UI 생성
+</details>
+<details>
+<summary>김성겸</summary>
+  
+  > 1. 아아
+</details>
+<details>
+<summary>양재혁</summary>
+  
+  > 1. 아아
+</details>
+<details>
+<summary>정효주</summary>
+  
+  > 1. 아아
+</details>
+
+
+
+## 회고
+
+<details>
+<summary>김지민</summary>
+  
+ #### 좋았던 점
+> 1. 아아
+#### 아쉬운 점
+> 1. 아아
+</details>
+<details>
+<summary>김성겸</summary>
+  
+  #### 좋았던 점
+> 1. 아아
+#### 아쉬운 점
+> 1. 아아
+</details>
+<details>
+<summary>양재혁</summary>
+  
+  #### 좋았던 점
+> 1. 아아
+#### 아쉬운 점
+> 1. 아아
+</details>
+<details>
+<summary>정효주</summary>
+  
+ #### 좋았던 점
+> 1. 아아
+#### 아쉬운 점
+> 1. 아아
+</details>
+
 ## 🛢️ Stack
 
 ### Language
