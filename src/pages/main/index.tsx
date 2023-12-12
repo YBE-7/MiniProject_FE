@@ -11,6 +11,7 @@ import BenefitsInfo from 'components/main/BenefitsInfo';
 import SiderRegions from 'components/main/SiderRegions';
 import TypeAccommodations from 'components/main/TypeAccommodations';
 import TopBenefits from 'components/main/TopBenefits';
+import useNotiTodayOrder from 'hooks/main/useNotiTodayOrder';
 
 const main = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -24,6 +25,9 @@ const main = () => {
 	}, []);
 
 	const show = useScrollToShow(false, 200);
+
+	// 브라우저 알림창으로 오늘 입실할 에약을 알려주는 기능
+	useNotiTodayOrder();
 
 	return (
 		<div className={isOpen ? 'h-screen overflow-hidden' : ''}>
