@@ -4,6 +4,8 @@ import { useQuery } from 'react-query';
 import { OrderItem, myOrder } from 'types/myPage.type';
 import { getCookie } from 'utils';
 import { foramtYYYYMMDD } from 'utils/formatDate';
+import { useRecoilState } from 'recoil';
+import { isFirstVisitState } from 'recoil/atoms/firstVisitAtom';
 
 /**
  * accessToken 이 있으면 주문한 상품의 목록을 불러옵니다.
@@ -14,6 +16,7 @@ const useNotiTodayOrder = () => {
 	const myOrderItems: OrderItem[] = [];
 	const isSupported = 'Notification' in window;
 	const notificationRef = useRef<Notification>();
+	const [isFirstVisit, setIsFirstVisit] = useRecoilState(isFirstVisitState);
 
 	const accessToken = getCookie('accessToken');
 	if (accessToken) {
@@ -39,7 +42,11 @@ const useNotiTodayOrder = () => {
 		);
 
 		// 알림이 허용되어있고, 오늘 입실할 예약이 있으면
-		if (Notification.permission === 'granted' && todayOrder !== undefined) {
+		if (
+			Notification.permission === 'granted' &&
+			todayOrder !== undefined &&
+			isFirstVisit
+		) {
 			notificationRef.current = new Notification(
 				'[입실안내] 오늘 입실해야할 예약이 있습니다.',
 				{
@@ -52,8 +59,9 @@ const useNotiTodayOrder = () => {
 					icon: todayOrder.accommodation.image,
 				},
 			);
+			setIsFirstVisit(false);
 		}
-	}, [myOrder]);
+	}, [myOrder, isFirstVisit]);
 };
 
 export default useNotiTodayOrder;
