@@ -23,70 +23,70 @@ import 'swiper/css/scrollbar';
 import './Carouse.css';
 import styles from './MainCarousel.module.css';
 
-const MainCarousel = () => {
-	const carouselDate = [
-		{
-			id: 'carousel1',
-			src: carousel1,
-			url: 'https://board.yanolja.com/event/294/index.html',
-		},
-		{
-			id: 'carousel2',
-			src: carousel2,
-			url: 'https://board.yanolja.com/event/375/index.html',
-		},
-		{
-			id: 'carousel3',
-			src: carousel3,
-			url: 'https://www.yanolja.com/exhibition/7967',
-		},
-		{
-			id: 'carousel4',
-			src: carousel4,
-			url: 'https://board.yanolja.com/event/151/index.html',
-		},
-		{
-			id: 'carousel5',
-			src: carousel5,
-			url: 'https://board.yanolja.com/event/328/index.html',
-		},
-		{
-			id: 'carousel6',
-			src: carousel6,
-			url: 'https://board.yanolja.com/event/154/index.html',
-		},
-		{
-			id: 'carousel7',
-			src: carousel7,
-			url: 'https://board.yanolja.com/event/151/index.html',
-		},
-		{
-			id: 'carousel8',
-			src: carousel8,
-			url: 'https://www.yanolja.com/live-commerce/lkyanolja-c895984665b846c78aa2da52e3354a31',
-		},
-		{
-			id: 'carousel9',
-			src: carousel9,
-			url: 'https://www.yanolja.com/promotion/nol-promotion?eventcode=NOY92',
-		},
-		{
-			id: 'carousel10',
-			src: carousel10,
-			url: 'https://board.yanolja.com/event/328/index.html',
-		},
-		{
-			id: 'carousel11',
-			src: carousel11,
-			url: 'https://board.yanolja.com/event/294/index.html',
-		},
-		{
-			id: 'carousel12',
-			src: carousel12,
-			url: 'https://board.yanolja.com/event/323/index.html',
-		},
-	];
+const carouselDate = [
+	{
+		id: 'carousel1',
+		src: carousel1,
+		url: 'https://board.yanolja.com/event/294/index.html',
+	},
+	{
+		id: 'carousel2',
+		src: carousel2,
+		url: 'https://board.yanolja.com/event/375/index.html',
+	},
+	{
+		id: 'carousel3',
+		src: carousel3,
+		url: 'https://www.yanolja.com/exhibition/7967',
+	},
+	{
+		id: 'carousel4',
+		src: carousel4,
+		url: 'https://board.yanolja.com/event/151/index.html',
+	},
+	{
+		id: 'carousel5',
+		src: carousel5,
+		url: 'https://board.yanolja.com/event/328/index.html',
+	},
+	{
+		id: 'carousel6',
+		src: carousel6,
+		url: 'https://board.yanolja.com/event/154/index.html',
+	},
+	{
+		id: 'carousel7',
+		src: carousel7,
+		url: 'https://board.yanolja.com/event/151/index.html',
+	},
+	{
+		id: 'carousel8',
+		src: carousel8,
+		url: 'https://www.yanolja.com/live-commerce/lkyanolja-c895984665b846c78aa2da52e3354a31',
+	},
+	{
+		id: 'carousel9',
+		src: carousel9,
+		url: 'https://www.yanolja.com/promotion/nol-promotion?eventcode=NOY92',
+	},
+	{
+		id: 'carousel10',
+		src: carousel10,
+		url: 'https://board.yanolja.com/event/328/index.html',
+	},
+	{
+		id: 'carousel11',
+		src: carousel11,
+		url: 'https://board.yanolja.com/event/294/index.html',
+	},
+	{
+		id: 'carousel12',
+		src: carousel12,
+		url: 'https://board.yanolja.com/event/323/index.html',
+	},
+];
 
+const MainCarousel = () => {
 	return (
 		<div>
 			<div className="my-3 flex ">
