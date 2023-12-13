@@ -315,7 +315,9 @@ Jira를 간단하게 작성하여 서로 작업 내용을 공유하니까 다른
 <details>
 <summary>양재혁</summary>
   
-  > 1. 아아
+  > 1. 로그인, 회원가입 에러 핸들링 로직 수정
+>   2. axios 인스턴스 분리
+>   3. 마이페이지 인터페이스 분리
 </details>
 <details>
 <summary>정효주</summary>
