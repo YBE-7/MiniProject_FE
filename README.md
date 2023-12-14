@@ -341,7 +341,10 @@ Jira를 간단하게 작성하여 서로 작업 내용을 공유하니까 다른
 <details>
 <summary>정효주</summary>
   
-  > 1. 아아
+  > 1. 함수 컴포넌트의 Props 타입을 React.FC 대신 직접 명시하여 수정
+>   2. 타입스크립트 부모와 자식 간의 Props 타입을 일치
+>   3. 스켈레톤 UI 생성
+
 </details>
 
 
