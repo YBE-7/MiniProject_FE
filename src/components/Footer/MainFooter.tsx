@@ -19,6 +19,7 @@ import award10 from '../../assets/images/award-10.svg';
 import award11 from '../../assets/images/award-11.svg';
 import award12 from '../../assets/images/award-12.png';
 import award13 from '../../assets/images/award-13.svg';
+import styles from '../common/Common.module.css';
 
 const MainFooter = () => {
 	const [openMenu, setOpenMenu] = useState(false);
@@ -185,147 +186,141 @@ const MainFooter = () => {
 				</p>
 				<p className="pt-1">고객센터 : 1644-1346 (오전 9시 - 익일 새벽 3시)</p>
 			</div>
-			<ul className="line-height-10 mt-3">
-				<div className="pt-[10px] text-textGray flex">
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://www.yanolja.in/"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							회사소개
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://ad.yanolja.com/intro"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							광고제휴문의
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://careers.yanolja.co/"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							인재채용
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer font-bold"
-							rel="noreferrer"
-							target="_blank"
-							href="https://careers.yanolja.co/"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							개인정보처리방침
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://policy.yanolja.com/policy/?t=youth"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							청소년 보호 정책
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://m.policy.yanolja.com/pf/policy/service?t=service&d=m"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							서비스 이용 약관
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://m.policy.yanolja.com/policy/?t=location&d=m"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							위치정보이용약관
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2208742885&apv_perm_no="
-							style={{
-								border: '1px solid #ccc',
-								padding: 3,
-								marginRight: 5,
-							}}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							사업자 정보확인
-						</a>
-					</li>
-				</div>
-			</ul>
-			<ul className="line-height-10 mt-3 mb-7">
-				<div className="text-textGray flex">
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://policy.yanolja.com/policy/?t=terms-eft"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							전자금융거래 이용약관
-						</a>
-					</li>
-					<li>
-						<a
-							className="pt-1 cursor-pointer"
-							rel="noreferrer"
-							target="_blank"
-							href="https://policy.yanolja.com/policy/?t=notes-eft"
-							style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
-							onMouseOver={handleMouseOver}
-							onMouseOut={handleMouseOut}
-						>
-							전자금융거래 이용자 유의사항
-						</a>
-					</li>
-				</div>
+			<ul className={styles.footLinks}>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://www.yanolja.in/"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						회사소개
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://ad.yanolja.com/intro"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						광고제휴문의
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://careers.yanolja.co/"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						인재채용
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer font-bold"
+						rel="noreferrer"
+						target="_blank"
+						href="https://careers.yanolja.co/"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						개인정보처리방침
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://policy.yanolja.com/policy/?t=youth"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						청소년 보호 정책
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://m.policy.yanolja.com/pf/policy/service?t=service&d=m"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						서비스 이용 약관
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://m.policy.yanolja.com/policy/?t=location&d=m"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						위치정보이용약관
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://www.ftc.go.kr/bizCommPop.do?wrkr_no=2208742885&apv_perm_no="
+						style={{
+							border: '1px solid #ccc',
+							padding: 3,
+							marginRight: 5,
+						}}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						사업자 정보확인
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://policy.yanolja.com/policy/?t=terms-eft"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						전자금융거래 이용약관
+					</a>
+				</li>
+				<li>
+					<a
+						className="pt-1 cursor-pointer"
+						rel="noreferrer"
+						target="_blank"
+						href="https://policy.yanolja.com/policy/?t=notes-eft"
+						style={{ border: '1px solid #ccc', padding: 3, marginRight: 5 }}
+						onMouseOver={handleMouseOver}
+						onMouseOut={handleMouseOut}
+					>
+						전자금융거래 이용자 유의사항
+					</a>
+				</li>
 			</ul>
 			<ul className="line-height-10 mt-3 mb-3">
 				<div className="flex">
@@ -434,8 +429,8 @@ const MainFooter = () => {
 					콘텐츠산업 진흥업에 따른 표시
 				</a>
 			</div>
-			<ul className="line-height-10 mt-3 mb-20 flex justify-between">
-				<li style={{ textAlign: 'center' }}>
+			<ul className="line-height-10 mt-3 mb-20 flex flex-wrap justify-between text-center">
+				<li>
 					<img
 						src={award07}
 						alt="award07"
@@ -446,7 +441,7 @@ const MainFooter = () => {
 						관리체계 인증 ISMS-P
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award08}
 						alt="award08"
@@ -457,7 +452,7 @@ const MainFooter = () => {
 						소비자중심경영(CCM)
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award09}
 						alt="award09"
@@ -468,7 +463,7 @@ const MainFooter = () => {
 						브랜드 선정
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award10}
 						alt="award10"
@@ -479,7 +474,7 @@ const MainFooter = () => {
 						숙박앱 부문1위
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award11}
 						alt="award11"
@@ -491,7 +486,7 @@ const MainFooter = () => {
 						숙박정보부문 대상
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award12}
 						alt="award12"
@@ -503,7 +498,7 @@ const MainFooter = () => {
 						숙박정보부문 대상
 					</p>
 				</li>
-				<li style={{ textAlign: 'center' }}>
+				<li>
 					<img
 						src={award13}
 						alt="award13"

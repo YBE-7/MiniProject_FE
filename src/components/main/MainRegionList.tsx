@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useQueryMainRegion } from 'hooks/main/useQueryMainRegion';
 import MainRegionItem from './MainRegionItem';
+import MainRegionSkeletonItem from './MainRegionSkeletonItem';
 
 export type Accommodation = {
 	id: string;
@@ -38,29 +39,26 @@ const MainRegionList = () => {
 
 	return (
 		<>
+			<div className="font-semibold text-title"> 겨울엔 이 숙소 </div>
+			<div className="my-2 ">
+				{region.map((item, idx) => (
+					<button
+						className={`rounded-full py-1 px-2 w-14 lg:w-20 mr-2 hover:bg-bgGray text-sm lg:text-[16px] ${
+							btnActive === item.data
+								? 'bg-hoverBg text-blue font-semibold'
+								: 'bg-white text-black border-2 border-bgGray '
+						}`}
+						onClick={() => handleLocationClick(`${item.data}`)}
+						key={idx}
+					>
+						{item.region}
+					</button>
+				))}
+			</div>
 			{isLoading ? (
-				<div className="font-semibold h-50 flex items-center "> Loading</div>
+				<MainRegionSkeletonItem />
 			) : (
-				<>
-					{!data && <div>숙소가 없습니다 ! </div>}
-					<div className="font-semibold text-title"> 겨울엔 이 숙소 </div>
-					<div className="my-2 ">
-						{region.map((item, idx) => (
-							<button
-								className={`rounded-full py-1 px-2 w-[80px] mr-2 hover:bg-bgGray ${
-									btnActive === item.data
-										? 'bg-hoverBg text-blue font-semibold'
-										: 'bg-white text-black border-2 border-bgGray '
-								}`}
-								onClick={() => handleLocationClick(`${item.data}`)}
-								key={idx}
-							>
-								{item.region}
-							</button>
-						))}
-					</div>
-					<MainRegionItem accommodations={accommodations} />
-				</>
+				<MainRegionItem accommodations={accommodations} />
 			)}
 		</>
 	);

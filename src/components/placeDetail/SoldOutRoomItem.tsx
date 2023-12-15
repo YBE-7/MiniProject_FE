@@ -13,15 +13,16 @@ export default function SoldOutRoomItem({ roomItem, name }: RoomProps) {
 
 	const handleItemClick = () => {
 		if (name !== undefined) {
-			navigate(`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`);
+			navigate(
+				`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`,
+			);
 		}
 	};
 
-
 	return (
-		<div className="flex py-5 justify-between border-b border-borderGray cursor-pointer">
-			<div>
-				<div className="w-[320px] h-[160px] rounded-lg">
+		<div className="flex flex-wrap py-5 justify-between border-b border-borderGray cursor-pointer">
+			<div className="mb-4">
+				<div className="w-full lg:w-[320px] lg:h-[160px] rounded-lg">
 					<RoomImageSwiper items={roomItem.images} />
 				</div>
 				<p className="text-title text-black font-bold mt-3">{roomItem.name}</p>
@@ -30,7 +31,7 @@ export default function SoldOutRoomItem({ roomItem, name }: RoomProps) {
 					<p>기준2인 / 최대 {roomItem.capacity}인</p>
 				</div>
 			</div>
-			<div className="p-4 w-[386px] h-fit border-borderGray border rounded-lg">
+			<div className="p-4 w-full lg:w-[386px] h-fit border-borderGray border rounded-lg">
 				<div className="flex text-sm justify-between ">
 					<span className="text-textGray font-semibold">숙박</span>
 					<div className="flex items-center" onClick={handleItemClick}>
@@ -47,7 +48,9 @@ export default function SoldOutRoomItem({ roomItem, name }: RoomProps) {
 					</p>
 				</div>
 				<div className="flex flex-col items-end">
-					<p className="text-title font-bold text-soldOut">{formattedPrice}원</p>
+					<p className="text-title font-bold text-soldOut">
+						{formattedPrice}원
+					</p>
 					<p className="font-bold text-secondaryTextGray text-content">
 						예약마감
 					</p>

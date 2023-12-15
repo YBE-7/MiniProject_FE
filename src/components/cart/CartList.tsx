@@ -12,13 +12,11 @@ interface CartListProps {
 	handleDeleteItem: (itemId: string) => Promise<void>;
 }
 
-const CartList: React.FC<CartListProps> = ({
+const CartList = ({
 	dataCartItems,
 	handleCheckbox,
 	handleDeleteItem,
-}) => {
-	// console.log(dataCartItems)
-
+}: CartListProps) => {
 	return (
 		<>
 			<div className={styles.wrap}>

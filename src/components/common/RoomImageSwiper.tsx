@@ -19,11 +19,11 @@ export default function RoomImageSwiper({ items }: Props) {
 			{items &&
 				items.map((item, index) => (
 					<SwiperSlide key={index}>
-						<div>
+						<div className="aspect-[2/1] rounded-lg overflow-hidden">
 							<img
 								src={item}
 								alt="숙소사진"
-								className="w-[320px] h-[160px] rounded-lg"
+								className="w-full h-full object-cover"
 							/>
 							<p className="absolute bottom-1 right-1 text-xs text-white font-bold bg-transparentGray px-1 py-[2px]">
 								{index + 1}/{items.length}

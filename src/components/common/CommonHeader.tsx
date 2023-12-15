@@ -4,9 +4,9 @@ import {
 	KeyboardArrowLeft,
 	ShoppingCartOutlined,
 } from '@mui/icons-material';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { categoryToKor, regionToKor } from 'utils/switchNameToKor';
-import { getCookie, handleArrowBackClick } from 'utils';
+import { getCookie } from 'utils';
 import { Link } from 'react-router-dom';
 import { RegionHeaderProps } from 'types/Region.type';
 import styles from './Common.module.css';
@@ -22,9 +22,14 @@ function CommonHeader({
 	isBackIcon = true,
 	isCartIcon = false,
 }: RegionHeaderProps) {
+	const navigate = useNavigate();
 	const [cartCount, setCartCount] = useRecoilState(cartCountState);
 	const { category, region } = useParams();
 	// const { data: cartCount } = useQueryCartCount();
+
+	const handleArrowBackClick = () => {
+		navigate(-1);
+	};
 
 	useEffect(() => {
 		const accessToken = getCookie('accessToken');
@@ -41,9 +46,9 @@ function CommonHeader({
 	return (
 		<nav className={styles.nav}>
 			<div className={styles.wrap}>
-				<div className={styles.leftWrap} onClick={handleArrowBackClick}>
+				<div className={styles.leftWrap}>
 					{isBackIcon && (
-						<div className="w-8">
+						<div className="w-8" onClick={handleArrowBackClick}>
 							<KeyboardArrowLeft sx={{ fontSize: '2rem' }} />
 						</div>
 					)}

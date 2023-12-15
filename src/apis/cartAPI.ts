@@ -1,17 +1,16 @@
 import instance from './axios';
 import { PostOrderItem, PostClient, PostSubscriber } from 'types/Orders';
-const cartAPI = {
-	postRoomToCart(
-		roomTypeId: number,
-		checkInDate: string,
-		checkOutDate: string,
-	) {
-		return instance.post('carts', {
-			roomTypeId: roomTypeId,
-			checkinDate: checkInDate,
-			checkoutDate: checkOutDate,
-		});
-	},
+
+export const postRoomToCart = (
+	roomTypeId: number,
+	checkInDate: string,
+	checkOutDate: string,
+) => {
+	return instance.post('carts', {
+		roomTypeId: roomTypeId,
+		checkinDate: checkInDate,
+		checkoutDate: checkOutDate,
+	});
 };
 
 // 장바구니 개별 삭제
@@ -47,4 +46,3 @@ export const getOrderCheck = async (orderId: number) => {
 	const res = await instance.get(`orders/${orderId}`);
 	return res.data;
 };
-export default cartAPI;

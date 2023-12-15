@@ -7,13 +7,14 @@ import RoomImageSwiper from 'components/common/RoomImageSwiper';
 import { RoomProps } from 'types/Place';
 import { useNavigate, useParams } from 'react-router';
 import { formatNumberWithCommas } from 'utils/numberComma';
-import cartAPI from 'apis/cartAPI';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { getCookie } from 'utils';
 import swal from 'sweetalert';
 import { orderItemState } from 'recoil/atoms/orderAtom';
-import { formatDateWithoutYear } from 'utils/formatDate';
+import { getDayBeforeCheckIn } from 'utils/formatDate';
+import saveRoomtoCart from 'utils/savsRoomtoCart';
+import useSetFreeCancleDate from 'hooks/roomDetail/useSetFreeCancleDate';
 
 export default function RoomItem({ roomItem, name }: RoomProps) {
 	const navigate = useNavigate();
@@ -21,40 +22,24 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 	const checkInDate = useRecoilValue(checkInDateState);
 	const checkOutDate = useRecoilValue(checkOutDateState);
 	const [, setOrderItem] = useRecoilState(orderItemState);
-	const [freeCancle, setFreeCancle] =  useState(false);
+	const freeCancle = useSetFreeCancleDate();
+	const accessToken = getCookie('accessToken');
+	const formattedPrice = formatNumberWithCommas(roomItem.price);
+	const cancleDate = getDayBeforeCheckIn(checkInDate);
 
 	const handleItemClick = () => {
 		if (name !== undefined) {
-			navigate(`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`);
-		}
-	};
-
-	const formattedPrice = formatNumberWithCommas(roomItem.price);
-
-	const saveRoomtoCart = async () => {
-		try {
-			const checkInDateString = checkInDate.toISOString().split('T')[0];
-			const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-			const response = await cartAPI.postRoomToCart(
-				roomItem.id,
-				checkInDateString,
-				checkOutDateString,
+			navigate(
+				`/places/${accommodationdId}/${roomItem.id}?name=${name}&status=${roomItem.status}&price=${roomItem.price}`,
 			);
-			if (response.status === 201) {
-				swal({ title: '장바구니 담기에 성공하였습니다.', icon: 'success' });
-			} 
-		} catch (error) {
-			swal({ title: '실패', text :"장바구니에 담을 수 있는 개수를 초과하였습니다.", icon: 'error' });
 		}
 	};
 
 	const handleCartBtnClick = () => {
-		const accessToken = getCookie('accessToken');
-
 		if (!accessToken) {
 			swal({ title: '로그인이 필요한 서비스입니다.', icon: 'warning' });
 			navigate('/login');
-		} else saveRoomtoCart();
+		} else saveRoomtoCart(checkInDate, checkOutDate, roomItem.id);
 	};
 
 	const handleOrderBtnClick = () => {
@@ -79,34 +64,10 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 		}
 	};
 
-	const isFreeCancle = () => {
-		const date = new Date(checkInDate);
-		const today = new Date();
-		return (
-			date.getFullYear() !== today.getFullYear() ||
-			date.getMonth() !== today.getMonth() ||
-			date.getDate() !== today.getDate()
-		  );
-	}
-
-	const getDayBeforCheckIn = () => {
-		const date = new Date(checkInDate);
-		date.setDate(date.getDate() - 1);
-		
-		return date;
-	}
-
-	useEffect(() => {
-		setFreeCancle(isFreeCancle());
-	},[checkInDate])
-
-	const cancleDate = formatDateWithoutYear(getDayBeforCheckIn());	
-	
-
 	return (
-		<div className="flex py-5 justify-between border-b border-borderGray cursor-pointer">
-			<div>
-				<div className="w-[320px] h-[160px] rounded-lg">
+		<div className="flex flex-wrap py-5 justify-between border-b border-borderGray cursor-pointer">
+			<div className="mb-4">
+				<div className="w-full lg:w-[320px] lg:h-[160px] rounded-lg">
 					<RoomImageSwiper items={roomItem.images} />
 				</div>
 				<p className="text-title text-black font-bold mt-3">{roomItem.name}</p>
@@ -116,7 +77,7 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 					<p>기준2인 / 최대 {roomItem.capacity}인</p>
 				</div>
 			</div>
-			<div className="p-4 w-[386px] h-fit border-borderGray border rounded-lg">
+			<div className="p-4 w-full lg:w-[386px] h-fit border-borderGray border rounded-lg">
 				<div className="flex text-sm justify-between ">
 					<span className="text-black font-semibold">숙박</span>
 					<div className="flex items-center" onClick={handleItemClick}>
@@ -143,8 +104,9 @@ export default function RoomItem({ roomItem, name }: RoomProps) {
 					{roomItem.status === 'OK' ? (
 						<div className="flex items-center">
 							<p className="text-green text-sm font-bold ml-3">
-								{freeCancle ? `무료취소 (${cancleDate} 17:00전까지)` : `취소 및 환불 불가` }
-								
+								{freeCancle
+									? `무료취소 (${cancleDate} 17:00전까지)`
+									: `취소 및 환불 불가`}
 							</p>
 							<KeyboardArrowRightIcon
 								sx={{ fill: '#008161', fontSize: '16px' }}

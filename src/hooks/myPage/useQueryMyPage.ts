@@ -1,4 +1,4 @@
-import { getUserOrderInfo } from 'apis/axios';
+import { getUserOrderInfo } from '../../apis/myPageAPI';
 import { useQuery } from 'react-query';
 
 const getMyPageData = async (i: number) => {
@@ -11,12 +11,14 @@ const getMyPageData = async (i: number) => {
 		const currentDate = new Date();
 		currentDate.setMonth(currentDate.getMonth() - i);
 		const { data } = await getUserOrderInfo();
-		const filteredData = data?.filter((order) => {
-			return order.orderItems?.some((item) => {
-				const criteria = new Date(order.orderDate);
-				return criteria >= currentDate;
-			});
-		});
+		const filteredData = data?.filter(
+			(order: { orderItems: any[]; orderDate: string | number | Date }) => {
+				return order.orderItems?.some(() => {
+					const criteria = new Date(order.orderDate);
+					return criteria >= currentDate;
+				});
+			},
+		);
 		return filteredData;
 	} catch (error) {
 		console.log(error);

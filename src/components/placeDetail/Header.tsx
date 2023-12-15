@@ -37,8 +37,6 @@ export default function Header({name} : HeaderProps) {
             </div>
         </div>
         </div>
-       
-        
     </div>
   )
 }

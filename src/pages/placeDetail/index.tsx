@@ -1,14 +1,10 @@
-// import Header from 'components/placeDetail/Header';
 import React, { useEffect, useRef, useState } from 'react';
 import CommonHeader from 'components/common/CommonHeader';
 import banner from '../../assets/images/banner.png';
 import StarIcon from '@mui/icons-material/Star';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import Footer from 'components/placeDetail/Footer';
-import CheckIcon from '@mui/icons-material/Check';
 import RoomItem from 'components/placeDetail/RoomItem';
 import SoldOutRoomItem from 'components/placeDetail/SoldOutRoomItem';
 import KakaoMap from 'components/placeDetail/KakaoMap';
@@ -18,25 +14,27 @@ import { formatFullDateRangeWithoutYear } from 'utils/formatDate';
 import { useRecoilValue } from 'recoil';
 import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import ImageSwiper from 'components/common/ImageSwiper';
-import { useParams } from 'react-router';
-import { PlaceDetailInfo, RoomDetailInfos } from 'types/Place';
-import accommodationAPI from 'apis/accommodationAPI';
-import Loading from 'components/placeDetail/Loading';
+import { useParams, useLocation } from 'react-router';
+import { PlaceDetailInfo } from 'types/Place';
 import { capacityState } from 'recoil/atoms/capacityAtom';
 import RegionProdCapacityModal from 'components/region/RegionProdCapacityModal';
 import swal from 'sweetalert';
 import useScrollToShow from 'hooks/common/handleScroll';
 import TopBtn from 'components/common/TopBtn';
+import Services from 'components/common/Services';
+import useGetAccommodationDetailInfo from 'hooks/placeDetail/useGetAccommodationDetailInfo';
+import useGetRoomsInfo from 'hooks/roomDetail/useGetRoomsInfo';
+import PlaceDetailSkeleton from 'components/placeDetail/PlaceDetailSkeleton';
+import useScrollToTop from 'hooks/common/useScrollToTop';
+import { Button, Tooltip } from '@material-tailwind/react';
+import { Share } from '@mui/icons-material';
+import useKakaoShare from 'hooks/placeDetail/useKakaoShare';
 
 export default function PlaceDetail() {
+	const location = useLocation();
 	const { accommodationdId } = useParams();
-	const [accommodationInfo, setAccommodationInfo] = useState<PlaceDetailInfo>();
-	const [roomsInfo, setRoomsInfo] = useState<RoomDetailInfos[]>();
-	const [isLoading, setIsLoading] = useState(true);
-
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isCapacityModalOpen, setIsCapacityModalOpen] = useState(false);
-
 	const checkInDate = useRecoilValue<Date>(checkInDateState);
 	const checkOutDate = useRecoilValue<Date>(checkOutDateState);
 	const [formattingDate, setFormattingDate] = useState(
@@ -44,49 +42,20 @@ export default function PlaceDetail() {
 	);
 	const capacityValue = useRecoilValue(capacityState);
 	const show = useScrollToShow(false, 200);
+	const [isLoading, accommodationInfo] = useGetAccommodationDetailInfo(
+		accommodationdId,
+	) as [boolean, PlaceDetailInfo];
+	const roomsInfo = useGetRoomsInfo(accommodationdId);
+	const mapRef = useRef<HTMLDivElement | null>(null);
 
-	const getAccommodationDetail = async () => {
-		if (accommodationdId !== undefined) {
-			setIsLoading(true);
-			try {
-				const id = +accommodationdId;
-				const response = await accommodationAPI.getPlaceDetail(id);
-				setAccommodationInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load accommodation details:', error);
-			}
-			setIsLoading(false);
-		}
-	};
+	useScrollToTop();
 
-	const getRoomsInfo = async () => {
-		if (accommodationdId !== undefined) {
-			try {
-				const id = +accommodationdId;
-				const checkInDateString = checkInDate.toISOString().split('T')[0];
-				const checkOutDateString = checkOutDate.toISOString().split('T')[0];
-
-				const response = await accommodationAPI.getPlaceDetailRooms(
-					id,
-					checkInDateString,
-					checkOutDateString,
-					capacityValue,
-				);
-				setRoomsInfo(response.data.data);
-			} catch (error) {
-				console.error('Failed to load roomtype information', error);
-			}
-		}
-	};
-
-	useEffect(() => {
-		getAccommodationDetail();
-		getRoomsInfo();
-	}, [accommodationdId]);
-
-	useEffect(() => {
-		getRoomsInfo();
-	}, [checkInDate, checkOutDate, capacityValue]);
+	// 카카오톡 메시지 공유 hooks
+	const { handleKakaoShare } = useKakaoShare(
+		location.pathname,
+		accommodationInfo,
+		roomsInfo,
+	);
 
 	useEffect(() => {
 		setFormattingDate(
@@ -109,23 +78,30 @@ export default function PlaceDetail() {
 				.then(() => {
 					swal('주소가 복사되었습니다.', { icon: 'success' });
 				})
-				.catch((err) => {
-					// This will be executed if the copying failed
+				.catch((error) => {
 					swal('주소 복사에 실패했습니다.', { icon: 'error' });
-					console.error('Error copying text: ', err);
+					console.error('Error copying text: ', error);
 				});
 		}
 	};
 
-	const mapRef = useRef<HTMLDivElement | null>(null); // KakaoMap 컴포넌트에 대한 참조 생성
-
 	const handleAddressClick = () => {
-		// KakaoMap 컴포넌트로 스크롤
 		mapRef.current?.scrollIntoView({ behavior: 'smooth' });
 	};
 
+	const handleCopyClipBoard = async () => {
+		try {
+			await navigator.clipboard.writeText(
+				'https://mini-team-7.vercel.app' + location.pathname,
+			);
+			swal('클립보드에 링크가 복사되었어요.', { icon: 'success' });
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	if (isLoading) {
-		return <Loading />;
+		return <PlaceDetailSkeleton />;
 	}
 
 	return (
@@ -136,14 +112,39 @@ export default function PlaceDetail() {
 				handleOpen={handleCapacityClick}
 			/>
 			<CommonHeader name={accommodationInfo?.name} isHomeIcon isCartIcon />
-			{/* <Header name={accommodationInfo?.name} /> */}
 			<div className="relative mt-[48px] flex-row">
 				<div className="ml-[-1.25rem] mr-[-1.25rem]">
 					<ImageSwiper items={accommodationInfo?.images} />
 				</div>
 				<div className="pt-3">
-					<div className="flex w-full justify-between">
+					<div className="lg:flex w-full lg:justify-between">
 						<p className="text-lg font-bold">{accommodationInfo?.name}</p>
+						<div className="w-[76px] ml-auto h-8">
+							<Tooltip content="링크 주소 복사">
+								<Button
+									onClick={handleCopyClipBoard}
+									size="sm"
+									variant="text"
+									className="p-2"
+								>
+									<Share sx={{ fontSize: '1.25rem' }} />
+								</Button>
+							</Tooltip>
+							<Tooltip content="카카오톡 공유">
+								<Button
+									onClick={handleKakaoShare}
+									size="sm"
+									variant="text"
+									className="p-2"
+								>
+									<img
+										src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
+										alt="카카오톡 공유 보내기 버튼"
+										width={24}
+									/>
+								</Button>
+							</Tooltip>
+						</div>
 					</div>
 					<div className="flex items-center pt-[6px] pb-[2px]">
 						<LocationOnIcon sx={{ fill: '#0152cc' }} fontSize="small" />
@@ -177,13 +178,13 @@ export default function PlaceDetail() {
 					</div>
 					<div className="flex w-full text-content font-bold text-black">
 						<button
-							className="w-full flex items-start border border-borderGray rounded px-3 py-[11px]"
+							className="w-3/4 lg:w-1/2 flex items-start border border-borderGray rounded px-3 py-[11px]"
 							onClick={handleCalendarClick}
 						>
 							{formattingDate}
 						</button>
 						<button
-							className="w-full flex items-start border border-borderGray rounded px-3 py-[11px]"
+							className="w-1/4 lg:w-1/2 flex items-start border border-borderGray rounded px-3 py-[11px]"
 							onClick={handleCapacityClick}
 						>
 							성인 {capacityValue}
@@ -234,19 +235,7 @@ export default function PlaceDetail() {
 					</div>
 					<p>{accommodationInfo?.introduction}</p>
 				</div>
-				<div className="pt-5">
-					<div className="min-h-[3rem] flex items-center">
-						<p className="text-title font-bold">시실 및 서비스</p>
-					</div>
-					<div className="grid grid-cols-4 gap-4">
-						{accommodationInfo?.services.map((service, index) => (
-							<div key={index} className="flex items-center">
-								<CheckIcon />
-								<span>{service}</span>
-							</div>
-						))}
-					</div>
-				</div>
+				<Services services={accommodationInfo?.services} />
 				<div className="py-5">
 					<div className="min-h-[3rem] flex items-center">
 						<p className="text-title font-bold ">취소 안내</p>

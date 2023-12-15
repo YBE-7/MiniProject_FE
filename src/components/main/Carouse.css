@@ -20,3 +20,16 @@
 	font-size: 1rem;
 	opacity: 0.75;
 }
+[class*='MainCarousel'] .swiper-pagination {
+	font-size: 14px;
+}
+
+@media screen and (max-width: 767px) {
+	[class*='MainCarousel'] .swiper-button-prev,
+	[class*='MainCarousel'] .swiper-button-next {
+		display: none;
+	}
+	[class*='MainCarousel'] .swiper-pagination {
+		font-size: 11px;
+	}
+}

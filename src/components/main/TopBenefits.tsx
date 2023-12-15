@@ -6,7 +6,7 @@ import mainIcon4 from '../../assets/images/mainIcon4.svg';
 
 const TopBenefits = () => {
 	return (
-		<div className="flex text-xxsm px-20 py-5 mb-4 justify-between items-center">
+		<div className="flex text-xxsm max-w-xl lg:max-w-none mx-auto lg:px-20 py-5 mb-4 justify-between items-center">
 			<a
 				href="https://www.yanolja.com/raffle-deal/YADRAW"
 				rel="noreferrer"

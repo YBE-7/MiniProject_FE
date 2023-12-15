@@ -9,11 +9,11 @@ import { checkInDateState, checkOutDateState } from 'recoil/atoms/dateAtom';
 import { foramtYYYYMMDD } from 'utils/formatDate';
 import { useRecoilValue } from 'recoil';
 
-interface MainRegionItemProps {
+type MainRegionItemProps = {
 	accommodations: Accommodation[];
-}
+};
 
-const MainRegionItem: React.FC<MainRegionItemProps> = ({ accommodations }) => {
+const MainRegionItem = ({ accommodations }: MainRegionItemProps) => {
 	const id = useId();
 
 	const startDate = useRecoilValue(checkInDateState);
