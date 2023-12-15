@@ -519,3 +519,21 @@ Jira를 간단하게 작성하여 서로 작업 내용을 공유하니까 다른
 id : fast@naver.com <br/>
 pw : test123!
 
+## 📌 환경설정
+
+git clone https://github.com/YBE-7/MiniProject_FE <br/>
+npm i <br/>
+npm run start <br/> 
+하시고 .env 파일에<br/>
+<details>
+<summary>환경변수</summary>
+  REACT_APP_KAKAO_API_KEY = 769c2ff03a8fe204a09397ad6b385a5d
+  REACT_APP_KAKAO_SHARE_API_KEY = 8066a8630f3bf26042823994bf8ce2de
+</details>
+추가해주시면 됩니다!
+
+혹은 <br/>
+https://mini-team-7.vercel.app/
+배포 사이트 방문해주시면 됩니다! <br/>
+감사합니다 :)
+
